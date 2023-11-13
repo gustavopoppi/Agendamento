@@ -40,7 +40,7 @@ public class CustomerService {
     private Customer customerByIdThrowIFIsEmpty(Long id) {
         Optional<Customer> customerById = customerRepository.findById(id);
         if (customerById.isEmpty())
-            throw new RuntimeException("Customer no found.");
+            throw new RuntimeException("Customer not found.");
 
         return customerById.get();
     }

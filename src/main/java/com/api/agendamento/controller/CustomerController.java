@@ -15,7 +15,7 @@ import java.util.List;
 @RequestMapping("customer")
 public class CustomerController {
 
-    private CustomerService customerService;
+    private final CustomerService customerService;
 
     public CustomerController(CustomerService customerService) {
         this.customerService = customerService;
@@ -26,7 +26,7 @@ public class CustomerController {
         return ResponseEntity.status(HttpStatus.OK).body(customerService.getAllCustomers());
     }
 
-    @GetMapping
+    @GetMapping("{id}")
     public ResponseEntity<Customer> getCustomerById(@PathVariable Long id){
         return ResponseEntity.status(HttpStatus.OK).body(customerService.getCustomerById(id));
     }
