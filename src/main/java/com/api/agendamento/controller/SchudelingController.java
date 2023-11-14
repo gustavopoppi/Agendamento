@@ -1,7 +1,7 @@
 package com.api.agendamento.controller;
 
-import com.api.agendamento.dto.RecordSchudelingDto;
-import com.api.agendamento.model.Schudeling;
+import com.api.agendamento.dto.schudeling.ReadSchudelingDto;
+import com.api.agendamento.dto.schudeling.RecordSchudelingDto;
 import com.api.agendamento.service.SchudelingService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -20,24 +20,24 @@ public class SchudelingController {
     private SchudelingService schudelingService;
 
     @GetMapping
-    public ResponseEntity<List<Schudeling>> getAllSchudelings(){
+    public ResponseEntity<List<ReadSchudelingDto>> getAllSchudelings(){
         return ResponseEntity.ok(schudelingService.getAllSchudelings());
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Schudeling> getSchudelingById(@PathVariable Long id){
+    public ResponseEntity<ReadSchudelingDto> getSchudelingById(@PathVariable Long id){
         return ResponseEntity.status(HttpStatus.OK).body(schudelingService.getSchudelingById(id));
     }
 
     @PostMapping
     @Transactional
-    public ResponseEntity<Schudeling> createSchudeling(@RequestBody @Valid RecordSchudelingDto recordSchudelingDto){
-        return ResponseEntity.status(HttpStatus.CREATED).body(schudelingService.createSchudeling(recordSchudelingDto));
+    public ResponseEntity<ReadSchudelingDto> createSchudeling(@RequestBody @Valid RecordSchudelingDto recordSchudelingDto){
+        return ResponseEntity.status(HttpStatus.CREATED).body(schudelingService.recordSchudeling(recordSchudelingDto));
     }
 
     @PutMapping("{id}")
     @Transactional
-    public ResponseEntity<Schudeling> updateSchudeling(@PathVariable Long id , @RequestBody @Valid RecordSchudelingDto recordSchudelingDto){
+    public ResponseEntity<ReadSchudelingDto> updateSchudeling(@PathVariable Long id , @RequestBody @Valid RecordSchudelingDto recordSchudelingDto){
         return ResponseEntity.status(HttpStatus.OK).body(schudelingService.updateSchudeling(id, recordSchudelingDto));
     }
 

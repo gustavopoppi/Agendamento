@@ -1,4 +1,4 @@
-package com.api.agendamento.dto;
+package com.api.agendamento.dto.schudeling;
 
 import com.api.agendamento.model.Customer;
 import com.api.agendamento.model.Professional;
