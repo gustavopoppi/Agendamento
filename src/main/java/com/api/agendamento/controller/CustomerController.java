@@ -1,7 +1,7 @@
 package com.api.agendamento.controller;
 
-import com.api.agendamento.dto.RecordCustomerDto;
-import com.api.agendamento.model.Customer;
+import com.api.agendamento.dto.customer.ReadCustomerDto;
+import com.api.agendamento.dto.customer.RecordCustomerDto;
 import com.api.agendamento.service.CustomerService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -22,24 +22,24 @@ public class CustomerController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Customer>> getAllCustomers(){
+    public ResponseEntity<List<ReadCustomerDto>> getAllCustomers(){
         return ResponseEntity.status(HttpStatus.OK).body(customerService.getAllCustomers());
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Customer> getCustomerById(@PathVariable Long id){
+    public ResponseEntity<ReadCustomerDto> getCustomerById(@PathVariable Long id){
         return ResponseEntity.status(HttpStatus.OK).body(customerService.getCustomerById(id));
     }
 
     @PostMapping
     @Transactional
-    public ResponseEntity<Customer> createCustomer(@RequestBody @Valid RecordCustomerDto recordCustomerDto){
+    public ResponseEntity<ReadCustomerDto> createCustomer(@RequestBody @Valid RecordCustomerDto recordCustomerDto){
         return ResponseEntity.status(HttpStatus.CREATED).body(customerService.recordCustomer(recordCustomerDto));
     }
 
     @PutMapping("{id}")
     @Transactional
-    public ResponseEntity<Customer> fazerDepois(@PathVariable @Valid Long id, RecordCustomerDto recordCustomerDto){
+    public ResponseEntity<ReadCustomerDto> fazerDepois(@PathVariable @Valid Long id, RecordCustomerDto recordCustomerDto){
         return ResponseEntity.status(HttpStatus.OK).body(customerService.updateCustomer(id, recordCustomerDto));
     }
 

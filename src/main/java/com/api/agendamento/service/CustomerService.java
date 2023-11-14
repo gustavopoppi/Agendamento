@@ -1,6 +1,7 @@
 package com.api.agendamento.service;
 
-import com.api.agendamento.dto.RecordCustomerDto;
+import com.api.agendamento.dto.customer.ReadCustomerDto;
+import com.api.agendamento.dto.customer.RecordCustomerDto;
 import com.api.agendamento.model.Customer;
 import com.api.agendamento.repository.CustomerRepository;
 import org.springframework.beans.BeanUtils;
@@ -12,20 +13,21 @@ import java.util.Optional;
 @Service
 public class CustomerService {
 
-    private CustomerRepository customerRepository;
+    private final CustomerRepository customerRepository;
     public CustomerService(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
     }
 
-    public List<Customer> getAllCustomers() {
-        return customerRepository.findAll();
+    public List<ReadCustomerDto> getAllCustomers() {
+        List<Customer> customers = customerRepository.findAll();
+        return customers.stream().map(this::mapCustomerToReadCustomerDto).toList();
     }
 
-    public Customer getCustomerById(Long id) {
-        return customerByIdThrowIFIsEmpty(id);
+    public ReadCustomerDto getCustomerById(Long id) {
+        return mapCustomerToReadCustomerDto(customerByIdThrowIFIsEmpty(id));
     }
 
-    public Customer recordCustomer(RecordCustomerDto recordCustomerDto) {
+    public ReadCustomerDto recordCustomer(RecordCustomerDto recordCustomerDto) {
         return addAndSaveCustomer(new Customer(), recordCustomerDto);
     }
 
@@ -33,7 +35,7 @@ public class CustomerService {
         customerRepository.delete(customerByIdThrowIFIsEmpty(id));
     }
 
-    public Customer updateCustomer(Long id, RecordCustomerDto recordCustomerDto) {
+    public ReadCustomerDto updateCustomer(Long id, RecordCustomerDto recordCustomerDto) {
         return addAndSaveCustomer(customerByIdThrowIFIsEmpty(id), recordCustomerDto);
     }
 
@@ -45,8 +47,13 @@ public class CustomerService {
         return customerById.get();
     }
 
-    private Customer addAndSaveCustomer(Customer customer, RecordCustomerDto recordCustomerDto) {
+    private ReadCustomerDto addAndSaveCustomer(Customer customer, RecordCustomerDto recordCustomerDto) {
         BeanUtils.copyProperties(recordCustomerDto, customer);
-        return customerRepository.save(customer);
+        customerRepository.save(customer);
+        return mapCustomerToReadCustomerDto(customer);
+    }
+
+    private ReadCustomerDto mapCustomerToReadCustomerDto(Customer customer) {
+        return new ReadCustomerDto(customer.getId(), customer.getNome(), customer.getNome(), customer.getEmail());
     }
 }
