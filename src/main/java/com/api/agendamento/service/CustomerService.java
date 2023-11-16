@@ -14,6 +14,7 @@ import java.util.Optional;
 public class CustomerService {
 
     private final CustomerRepository customerRepository;
+
     public CustomerService(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
     }
@@ -54,6 +55,6 @@ public class CustomerService {
     }
 
     private ReadCustomerDto mapCustomerToReadCustomerDto(Customer customer) {
-        return new ReadCustomerDto(customer.getId(), customer.getNome(), customer.getNome(), customer.getEmail());
+        return new ReadCustomerDto(customer.getId(), customer.getNome(), customer.getEmail(), customer.getTelefone());
     }
 }
