@@ -57,6 +57,6 @@ public class ProfessionalService {
     }
 
     public void deleteProfessional(Long id) {
-        professionalRepository.delete(professionalByIdThrowIFIsEmpty(id));
+        professionalRepository.deleteById(id);
     }
 }

@@ -33,7 +33,7 @@ public class CustomerService {
     }
 
     public void deleteCustomer(Long id) {
-        customerRepository.delete(customerByIdThrowIFIsEmpty(id));
+        customerRepository.deleteById(id);
     }
 
     public ReadCustomerDto updateCustomer(Long id, RecordCustomerDto recordCustomerDto) {

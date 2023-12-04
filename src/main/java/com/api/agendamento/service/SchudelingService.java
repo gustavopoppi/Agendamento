@@ -37,7 +37,7 @@ public class SchudelingService {
     }
 
     public void deleteSchudeling(Long id) {
-        schudelingRepository.delete(schudelingByIdThrowIFIsEmpty(id));
+        schudelingRepository.deleteById(id);
     }
 
     private Schudeling schudelingByIdThrowIFIsEmpty(Long id){
