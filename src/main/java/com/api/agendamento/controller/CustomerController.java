@@ -23,12 +23,12 @@ public class CustomerController {
 
     @GetMapping
     public ResponseEntity<List<ReadCustomerDto>> getAllCustomers(){
-        return ResponseEntity.status(HttpStatus.OK).body(customerService.getAllCustomers());
+        return ResponseEntity.ok(customerService.getAllCustomers());
     }
 
     @GetMapping("{id}")
     public ResponseEntity<ReadCustomerDto> getCustomerById(@PathVariable Long id){
-        return ResponseEntity.status(HttpStatus.OK).body(customerService.getCustomerById(id));
+        return ResponseEntity.ok(customerService.getCustomerById(id));
     }
 
     @PostMapping
@@ -40,13 +40,13 @@ public class CustomerController {
     @PutMapping("{id}")
     @Transactional
     public ResponseEntity<ReadCustomerDto> fazerDepois(@PathVariable @Valid Long id, RecordCustomerDto recordCustomerDto){
-        return ResponseEntity.status(HttpStatus.OK).body(customerService.updateCustomer(id, recordCustomerDto));
+        return ResponseEntity.ok((customerService.updateCustomer(id, recordCustomerDto)));
     }
 
     @DeleteMapping("{id}")
     @Transactional
     public ResponseEntity<Object> deleteCustomer(@PathVariable Long id){
         customerService.deleteCustomer(id);
-        return ResponseEntity.status(HttpStatus.OK).body("Removed data.");
+        return ResponseEntity.ok("Removed data.");
     }
 }
