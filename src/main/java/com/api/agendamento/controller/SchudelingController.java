@@ -3,7 +3,6 @@ package com.api.agendamento.controller;
 import com.api.agendamento.dto.schudeling.ReadSchudelingDto;
 import com.api.agendamento.dto.schudeling.RecordSchudelingDto;
 import com.api.agendamento.service.SchudelingService;
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,19 +29,16 @@ public class SchudelingController {
     }
 
     @PostMapping
-    @Transactional
     public ResponseEntity<ReadSchudelingDto> createSchudeling(@RequestBody @Valid RecordSchudelingDto recordSchudelingDto){
         return ResponseEntity.status(HttpStatus.CREATED).body(schudelingService.recordSchudeling(recordSchudelingDto));
     }
 
     @PutMapping("{id}")
-    @Transactional
     public ResponseEntity<ReadSchudelingDto> updateSchudeling(@PathVariable Long id , @RequestBody @Valid RecordSchudelingDto recordSchudelingDto){
         return ResponseEntity.status(HttpStatus.OK).body(schudelingService.updateSchudeling(id, recordSchudelingDto));
     }
 
     @DeleteMapping("{id}")
-    @Transactional
     public ResponseEntity<Object> deleteSchudeling(@PathVariable Long id){
         schudelingService.deleteSchudeling(id);
         return ResponseEntity.status(HttpStatus.OK).body("Removed data.");

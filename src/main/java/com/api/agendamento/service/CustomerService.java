@@ -6,6 +6,7 @@ import com.api.agendamento.model.Customer;
 import com.api.agendamento.repository.CustomerRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,23 +20,28 @@ public class CustomerService {
         this.customerRepository = customerRepository;
     }
 
+    @Transactional(readOnly = true)
     public List<ReadCustomerDto> getAllCustomers() {
         List<Customer> customers = customerRepository.findAll();
         return customers.stream().map(this::mapCustomerToReadCustomerDto).toList();
     }
 
+    @Transactional(readOnly = true)
     public ReadCustomerDto getCustomerById(Long id) {
         return mapCustomerToReadCustomerDto(customerByIdThrowIFIsEmpty(id));
     }
 
+    @Transactional
     public ReadCustomerDto recordCustomer(RecordCustomerDto recordCustomerDto) {
         return addAndSaveCustomer(new Customer(), recordCustomerDto);
     }
 
+    @Transactional
     public void deleteCustomer(Long id) {
         customerRepository.deleteById(id);
     }
 
+    @Transactional
     public ReadCustomerDto updateCustomer(Long id, RecordCustomerDto recordCustomerDto) {
         return addAndSaveCustomer(customerByIdThrowIFIsEmpty(id), recordCustomerDto);
     }

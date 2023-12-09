@@ -8,6 +8,7 @@ import com.api.agendamento.model.Professional;
 import com.api.agendamento.repository.ProfessionalRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,19 +22,28 @@ public class ProfessionalService {
         this.professionalRepository = professionalRepository;
     }
 
+    @Transactional(readOnly = true)
     public List<ReadProfessionalDto> getAllProfessionals() {
         List<Professional> professionals = professionalRepository.findAll();
         return professionals.stream().map(this::mapProfessionalToReadProfessionalDto).toList();
     }
 
+    @Transactional(readOnly = true)
     public ReadProfessionalDto getProfessionalById(Long id) {
         return mapProfessionalToReadProfessionalDto(professionalByIdThrowIFIsEmpty(id));
     }
 
+    @Transactional
     public ReadProfessionalDto recordProfessional(RecordProfessionalDto recordProfessionalDto) {
         return addAndSaveProfessional(new Professional(), recordProfessionalDto);
     }
 
+    @Transactional
+    public void deleteProfessional(Long id) {
+        professionalRepository.deleteById(id);
+    }
+
+    @Transactional
     public ReadProfessionalDto updateProfessional(Long id, RecordProfessionalDto recordProfessionalDto) {
         return addAndSaveProfessional(professionalByIdThrowIFIsEmpty(id), recordProfessionalDto);
     }
@@ -54,9 +64,5 @@ public class ProfessionalService {
 
     private ReadProfessionalDto mapProfessionalToReadProfessionalDto(Professional professional) {
         return new ReadProfessionalDto(professional.getId(), professional.getNome(), professional.getEmail(), professional.getTelefone());
-    }
-
-    public void deleteProfessional(Long id) {
-        professionalRepository.deleteById(id);
     }
 }

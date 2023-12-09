@@ -6,6 +6,7 @@ import com.api.agendamento.model.Schudeling;
 import com.api.agendamento.repository.SchudelingRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,23 +20,28 @@ public class SchudelingService {
         this.schudelingRepository = schudelingRepository;
     }
 
+    @Transactional(readOnly = true)
     public List<ReadSchudelingDto> getAllSchudelings() {
         List<Schudeling> schudelings = schudelingRepository.findAll();
         return schudelings.stream().map(this::mapSchudelingToReadSchudelingDto).toList();
     }
 
+    @Transactional(readOnly = true)
     public ReadSchudelingDto getSchudelingById(Long id) {
         return mapSchudelingToReadSchudelingDto(schudelingByIdThrowIFIsEmpty(id));
     }
 
+    @Transactional
     public ReadSchudelingDto recordSchudeling(RecordSchudelingDto recordSchudelingDto) {
         return addAndSaveSchudeling(new Schudeling(), recordSchudelingDto);
     }
 
+    @Transactional
     public ReadSchudelingDto updateSchudeling(Long id, RecordSchudelingDto recordSchudelingDto) {
         return addAndSaveSchudeling(schudelingByIdThrowIFIsEmpty(id), recordSchudelingDto);
     }
 
+    @Transactional
     public void deleteSchudeling(Long id) {
         schudelingRepository.deleteById(id);
     }
